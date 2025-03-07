@@ -21,13 +21,17 @@ const CardProduct: React.FC<CardProductProps> = ({ product }) => {
           alt={product.title}
           src={product.thumbnail}
           width={300}
-          height={300} 
+          height={300}
           style={{ objectFit: "cover" }}
         />
       }
       style={{ width: 300, borderRadius: 12, overflow: "hidden" }}
     >
-      <Title level={4} style={{ marginBottom: 8 }}>
+      <Title
+        level={4}
+        style={{ marginBottom: 8 }}
+        ellipsis={{ tooltip: product.title }}
+      >
         {product.title}
       </Title>
 

@@ -1,13 +1,12 @@
 "use client";
 
-import { Col, Input, Row } from "antd";
+import { Col, Row } from "antd";
 import Link from "next/link";
 import React from "react";
+import SearchProduct from "../Search/Search";
 
-const Search = Input.Search;
 
 export default function Header() {
-  const onSearch = (value: string) => console.log(value);
 
   return (
     <header className="bg-gradient-to-r from-black-500 to-black-600 shadow-lg p-4">
@@ -18,12 +17,7 @@ export default function Header() {
             <h1 className="text-black text-2xl font-extrabold tracking-wide">
               <Link href={"/home"}>Nobody</Link>
             </h1>
-            <Search
-              placeholder="Search for something..."
-              onSearch={onSearch}
-              className="rounded-lg overflow-hidden hidden sm:block"
-              style={{ width: 350 }}
-            />
+            <SearchProduct/>
           </div>
         </Col>
 

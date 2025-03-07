@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../Redux/store/store";
 import {
   ProductType,
   setInfoPage,
@@ -10,11 +9,15 @@ import {
 } from "../Redux/store/features/productSlice";
 import CardProduct from "@/components/CardProduct/CardProduct";
 import { Col, Row, Button } from "antd";
+import {
+  getInfoPage,
+  productsRemainingSelector,
+} from "../Redux/store/selector";
 
 export default function ProductPage() {
   const dispatch = useDispatch();
-  const products = useSelector((state: RootState) => state.products.items);
-  const page = useSelector((state: RootState) => state.products.page);
+  const products = useSelector(productsRemainingSelector);
+  const page = useSelector(getInfoPage);
 
   useEffect(() => {
     fetchProducts(0); // Lấy trang đầu tiên
@@ -37,7 +40,7 @@ export default function ProductPage() {
   };
 
   // Tính tổng số trang
-  const totalPages = Math.ceil(page.total / page.limit);
+  const totalPages =  Math.ceil(page.total / page.limit);
 
   return (
     <div>

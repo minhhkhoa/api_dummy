@@ -21,6 +21,7 @@ export interface inforPage {
 interface ProductState {
   items: ProductType[];
   page: inforPage;
+  search: string;
 }
 
 const initialState: ProductState = {
@@ -30,6 +31,7 @@ const initialState: ProductState = {
     skip: 0,
     limit: 0,
   },
+  search: ""
 };
 
 const productSlice = createSlice({
@@ -45,13 +47,18 @@ const productSlice = createSlice({
     },
 
     setInfoPage: (state, action: PayloadAction<inforPage>) => {
-      state.page = action.payload
-    }
+      state.page = action.payload;
+    },
+
+    setSearch: (state, action: PayloadAction<string>) => {
+      state.search = action.payload;
+    },
   },
 });
 
 // Export actions
-export const { addProduct, setProducts, setInfoPage } = productSlice.actions;
+export const { addProduct, setProducts, setInfoPage, setSearch } =
+  productSlice.actions;
 
 // Export reducer
 export default productSlice.reducer;
