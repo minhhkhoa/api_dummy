@@ -1,0 +1,52 @@
+"use client";
+
+import { Col, Input, Row } from "antd";
+import Link from "next/link";
+import React from "react";
+
+const Search = Input.Search;
+
+export default function Header() {
+  const onSearch = (value: string) => console.log(value);
+
+  return (
+    <header className="bg-gradient-to-r from-black-500 to-black-600 shadow-lg p-4">
+      <Row className="h-16 items-center px-20">
+        {/* header-left */}
+        <Col span={12}>
+          <div className="flex items-center gap-10">
+            <h1 className="text-black text-2xl font-extrabold tracking-wide">
+              <Link href={'home'}>Nobody</Link>
+            </h1>
+            <Search
+              placeholder="Search for something..."
+              onSearch={onSearch}
+              className="rounded-lg overflow-hidden"
+              style={{ width: 350 }}
+            />
+          </div>
+        </Col>
+
+        {/* header-right */}
+        <Col span={12}>
+          <div className="flex justify-end gap-7">
+            {[
+              { href: "/home", label: "Home" },
+              { href: "/products", label: "Products" },
+              { href: "/blog", label: "Blog" },
+              { href: "/post", label: "Posts" },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-white text-lg font-medium transition duration-300 hover:text-yellow-300"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </Col>
+      </Row>
+    </header>
+  );
+}
