@@ -3,21 +3,45 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../Redux/store/store";
-import { ProductType, setProducts } from "../Redux/store/features/productSlice";
+import {
+  ProductType,
+  setInfoPage,
+  setProducts,
+} from "../Redux/store/features/productSlice";
 import CardProduct from "@/components/CardProduct/CardProduct";
-import { Col, Row } from "antd";
+import { Col, Row, Button } from "antd";
 
 export default function ProductPage() {
   const dispatch = useDispatch();
+  const products = useSelector((state: RootState) => state.products.items);
+  const page = useSelector((state: RootState) => state.products.page);
+
   useEffect(() => {
-    fetch("https://dummyjson.com/products")
-      .then((res) => res.json())
-      .then((result) => dispatch(setProducts(result.products)));
+    fetchProducts(0); // Lấy trang đầu tiên
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const products = useSelector((state: RootState) => state.products.items);
+
+  // Hàm fetch dữ liệu theo trang
+  const fetchProducts = (skip: number) => {
+    fetch(`https://dummyjson.com/products?limit=20&skip=${skip}`)
+      .then((res) => res.json())
+      .then((result) => {
+        const page = {
+          total: result.total,
+          skip: result.skip,
+          limit: result.limit,
+        };
+        dispatch(setInfoPage(page));
+        dispatch(setProducts(result.products));
+      });
+  };
+
+  // Tính tổng số trang
+  const totalPages = Math.ceil(page.total / page.limit);
+
   return (
-    <div className="">
+    <div>
+      {/* Danh sách sản phẩm */}
       <Row gutter={[20, 20]} className="py-5 flex justify-center">
         {products.map((item: ProductType) => (
           <Col key={item.id}>
@@ -25,6 +49,19 @@ export default function ProductPage() {
           </Col>
         ))}
       </Row>
+      {totalPages && (
+        <div className="flex justify-center gap-4 mt-8">
+          {[...Array(totalPages)].map((_, index) => (
+            <Button
+              key={index}
+              type={index === page.skip / page.limit ? "primary" : "default"}
+              onClick={() => fetchProducts(index * page.limit)}
+            >
+              {index + 1}
+            </Button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

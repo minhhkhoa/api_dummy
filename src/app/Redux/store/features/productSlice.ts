@@ -9,15 +9,27 @@ export interface ProductType {
   discountPercentage: number;
   rating: number;
   stock: number;
-  thumbnail: string
+  thumbnail: string;
+}
+
+export interface inforPage {
+  total: number;
+  skip: number;
+  limit: number;
 }
 
 interface ProductState {
   items: ProductType[];
+  page: inforPage;
 }
 
 const initialState: ProductState = {
   items: [],
+  page: {
+    total: 0,
+    skip: 0,
+    limit: 0,
+  },
 };
 
 const productSlice = createSlice({
@@ -30,12 +42,16 @@ const productSlice = createSlice({
 
     setProducts: (state, action: PayloadAction<ProductType[]>) => {
       state.items = action.payload;
+    },
+
+    setInfoPage: (state, action: PayloadAction<inforPage>) => {
+      state.page = action.payload
     }
   },
 });
 
 // Export actions
-export const { addProduct, setProducts } = productSlice.actions;
+export const { addProduct, setProducts, setInfoPage } = productSlice.actions;
 
 // Export reducer
 export default productSlice.reducer;
