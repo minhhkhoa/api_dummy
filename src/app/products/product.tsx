@@ -16,7 +16,9 @@ export default async function ProductIndex({ query, currentPage }: ProductIndexP
   const datas: IBackendRes<ProductType> = await sendRequest({
     url: "https://dummyjson.com/products",
     method: "GET",
-    queryParams: {query},
+    queryParams: {
+      q: query
+    },
   });
 
   const isEmpty = datas?.products?.length == 0;

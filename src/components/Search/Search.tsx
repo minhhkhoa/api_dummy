@@ -3,6 +3,7 @@
 import React from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { useDebouncedCallback } from "use-debounce"; //- cai them va tim hieu thu vien nay
 
 
 export default function SearchProduct() {
@@ -10,7 +11,9 @@ export default function SearchProduct() {
   const pathName = usePathname(); //- lay ra duong dan hien tai
   const { replace } = useRouter(); //-replacephương thức từ useRouter()
 
-  const handleSearch = (value: string) => {
+  const handleSearch = useDebouncedCallback((value: string) => {
+    //-Hàm này sẽ gói nội dung của handleSearchvà chỉ chạy mã sau một thời gian cụ thể khi người dùng ngừng nhập (300ms);
+    //-Bằng cách debounce, bạn có thể giảm số lượng yêu cầu được gửi đến cơ sở dữ liệu của mình, do đó tiết kiệm được tài nguyên.
     const params = new URLSearchParams(searchParams); //-URLSearchParamslà một Web API cung cấp các phương thức tiện ích để thao tác các tham số truy vấn URL
     if (value) {
       //- tao chuoi truy van
@@ -19,7 +22,7 @@ export default function SearchProduct() {
       params.delete("q");
     }
     replace(`${pathName}?${params.toString()}`); //-cập nhật URL bằng dữ liệu tìm kiếm của người dùng
-  };
+  });
   return (
     <>
       <div className="relative flex flex-1 flex-shrink-0">
