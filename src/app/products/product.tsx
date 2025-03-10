@@ -1,23 +1,21 @@
-
-// import { useState } from "react";
 import CardProduct from "@/components/CardProduct/CardProduct";
 import { Col, Row } from "antd";
 import { ProductType } from "../Redux/store/features/productSlice";
 import { sendRequest } from "@/utils/api";
+import { IQueryParams } from "./page";
+import { skip } from "node:test";
 // import { sendRequest } from "@/utils/api";
 
-interface ProductIndexProps {
-  query: string;
-  currentPage: number;
-}
-
-export default async function ProductIndex({ query, currentPage }: ProductIndexProps) {
+export default async function ProductIndex({ query }: { query: IQueryParams }) {
+  console.log("query: ", query);
 
   const datas: IBackendRes<ProductType> = await sendRequest({
     url: "https://dummyjson.com/products",
     method: "GET",
     queryParams: {
-      q: query
+      q: query.q,
+      limit: query.limit,
+      skip: query.skip
     },
   });
 

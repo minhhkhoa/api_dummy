@@ -15,6 +15,9 @@ export default function SearchProduct() {
     //-Hàm này sẽ gói nội dung của handleSearchvà chỉ chạy mã sau một thời gian cụ thể khi người dùng ngừng nhập (300ms);
     //-Bằng cách debounce, bạn có thể giảm số lượng yêu cầu được gửi đến cơ sở dữ liệu của mình, do đó tiết kiệm được tài nguyên.
     const params = new URLSearchParams(searchParams); //-URLSearchParamslà một Web API cung cấp các phương thức tiện ích để thao tác các tham số truy vấn URL
+    params.set("q", value); // Đặt lại từ khóa tìm kiếm
+    params.set("limit", "20"); // Giữ nguyên giới hạn
+    params.set("skip", "0"); // Reset về trang đầu
     if (value) {
       //- tao chuoi truy van
       params.set("q", value);

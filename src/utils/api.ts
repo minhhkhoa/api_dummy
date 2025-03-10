@@ -23,9 +23,15 @@ export const sendRequest = async <T>(props: IRequest) => {
   if (useCredentials) options.credentials = "include";
 
   if (queryParams) {
+    console.log(queryParams)
     // const paramSearch = queryParams.query;
-    url = `${url}/search?${queryString.stringify(queryParams)}`;
-    console.log("url: ", url);
+    const isSearch = queryParams?.q?.q || "";
+    if(isSearch){
+      url = `${url}/search?${queryString.stringify(queryParams.q)}`;
+      console.log("url: ", url);
+    } else{
+      url = `${url}/?${queryString.stringify(queryParams)}`;
+    }
   }
 
   return fetch(url, options).then((res) => {
@@ -43,3 +49,4 @@ export const sendRequest = async <T>(props: IRequest) => {
     }
   });
 };
+
