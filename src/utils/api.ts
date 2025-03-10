@@ -23,7 +23,9 @@ export const sendRequest = async <T>(props: IRequest) => {
   if (useCredentials) options.credentials = "include";
 
   if (queryParams) {
-    url = `${url}?${queryString.stringify(queryParams)}`;
+    const paramSearch = queryParams.query;
+    url = `${url}/search?q=${paramSearch}`;
+    console.log("url: ", url);
   }
 
   return fetch(url, options).then((res) => {

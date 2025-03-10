@@ -1,23 +1,26 @@
-import { sendRequest } from "@/utils/api";
 import ProductIndex from "./product";
-import { ProductType } from "../Redux/store/features/productSlice";
+import Pagination from "@/components/pagination/Pagination";
+import { Suspense } from "react";
+import CardProductSkeleton from "./CardProductSkeleton";
 
-export default async function ProductPage() {
-  const limit = 20;
+export default async function ProductPage(props: {
+  searchParams?: Promise<{
+    //-Các thành phần trang chấp nhận một thuộc tính có tên làsearchParams
+    q?: string;
+    page?: string;
+  }>;
+}) {
+    const searchParams = await props.searchParams;
+    const query: string = searchParams?.q || "";
+    const currentPage: number = Number(searchParams?.page) || 1;
 
-  // Gọi API lấy dữ liệu trang đầu tiên
-  const res = await sendRequest<IBackendRes<ProductType>>({
-    url: "https://dummyjson.com/products",
-    method: "GET",
-    queryParams: {
-      limit: limit,
-      skip: 0,
-    },
-  });
+  return (
+    <>
+      <Suspense key={query + currentPage} fallback={<CardProductSkeleton />}>
+        <ProductIndex query={query} currentPage={currentPage} />
+      </Suspense>
 
-  // Tính tổng số trang
-  const totalPages = Math.ceil(res.total / limit);
-  const listProducts = res.products || [];
-
-  return <ProductIndex data={listProducts} totalPages={totalPages} />;
+      <Pagination />
+    </>
+  );
 }
